@@ -1,0 +1,12 @@
+---
+- hosts: web
+  become: true
+  tasks:
+    - name: Pull the latest Docker image from Docker Hub
+      command: docker pull "{{ node-docker-app }}"
+
+    - name: Stop and remove existing container if any
+      command: docker rm -f node-docker-app || true
+
+    - name: Run the Docker container
+      command: docker run -d -p 80:2000 --name node-docker-app "{{ node-docker-app }}"
