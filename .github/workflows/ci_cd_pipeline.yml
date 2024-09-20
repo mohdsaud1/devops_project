@@ -28,7 +28,7 @@ jobs:
         uses: appleboy/scp-action@master
         with:
           source: "./" # Copy the whole directory
-          target: "/home/ubuntu/node-docker-app" # Path on the EC2 instance
+          target: "/home/ubuntu/devops_project/node-docker-app" # Path on the EC2 instance
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -40,9 +40,9 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/ubuntu/node-docker-app
+            cd /home/ubuntu/devops_project/node-docker-app
             docker build -t node-docker-app .
             docker stop node-docker-app || true
             docker rm node-docker-app || true
-            docker run -d -p 80:3000 --name node-docker-app node-docker-app
+            docker run -d -p 80:2000 --name node-docker-app node-docker-app
 
