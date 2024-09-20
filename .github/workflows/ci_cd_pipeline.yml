@@ -64,11 +64,11 @@ jobs:
             docker stop node-docker-app || true
             docker rm node-docker-app || true
 
-            # Remove the old image
+        # Remove the old image to avoid pulling from a remote registry
             docker rmi node-docker-app || true
 
-            # Build the Docker image with the updated code locally
-            docker build -t node-docker-app .
+# Build the Docker image with the updated code
+            docker build -t node-docker-app:v1 .
 
             # Run the new container with the latest image
             docker run -d -p 80:2000 --name node-docker-app node-docker-app
