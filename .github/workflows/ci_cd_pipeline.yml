@@ -33,6 +33,10 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Debug SSH key
+        run: echo "${{ secrets.SSH_PRIVATE_KEY }}"
+
+
       - name: Deploy to EC2 and build Docker image
         uses: appleboy/ssh-action@master
         with:
