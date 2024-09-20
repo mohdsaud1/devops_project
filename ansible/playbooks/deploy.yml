@@ -3,10 +3,22 @@
   become: true
   tasks:
     - name: Pull the latest Docker image from Docker Hub
-      command: docker pull "{{ node-docker-app }}"
+      docker_image:
+        name: "node-docker-app"  # Change this to your image name if available
+        tag: "latest"
+        source: pull
 
     - name: Stop and remove existing container if any
-      command: docker rm -f node-docker-app || true
+      docker_container:
+        name: node-docker-app
+        state: absent
 
     - name: Run the Docker container
-      command: docker run -d -p 80:2000 --name node-docker-app "{{ node-docker-app }}"
+      docker_container:
+        name: node-docker-app
+        image: "node-docker-app"  # Change this to your image name if available
+        state: started
+        restart_policy: always
+        published_ports:
+          - "80:2000"
+
