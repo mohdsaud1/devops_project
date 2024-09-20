@@ -27,8 +27,8 @@ jobs:
       - name: Copy code to EC2 instance using SSH
         uses: appleboy/scp-action@master
         with:
-          source: "./" # Copy the whole directory
-          target: "/home/ubuntu/devops_project/node-docker-app" # Path on the EC2 instance
+          source: "./"  # Copy the entire project directory
+          target: "/home/ubuntu/devops_project"  # Path to the main project folder on the EC2 instance
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -40,7 +40,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            ls -l /home/ubuntu/devops_project/node-docker-app
+            ls -l /home/ubuntu/devops_project
 
       - name: Deploy to EC2 and update Docker container
         uses: appleboy/ssh-action@master
@@ -52,7 +52,7 @@ jobs:
             export DOCKER_BUILDKIT=1
 
             # Navigate to the project directory
-            cd /home/ubuntu/devops_project/node-docker-app
+            cd /home/ubuntu/devops_project
 
             # Check if Dockerfile exists
             if [ ! -f Dockerfile ]; then
