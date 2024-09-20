@@ -54,7 +54,7 @@ jobs:
             # Navigate to the project directory
             cd /home/ubuntu/devops_project
 
-            # Check if Dockerfile exists
+            # Check if Dockerfile exists here
             if [ ! -f Dockerfile ]; then
               echo "Dockerfile not found!" >&2
               exit 1
