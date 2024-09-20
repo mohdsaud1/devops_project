@@ -15,7 +15,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
+          node-version: '20.x'  # Change to a stable version if needed
 
       - name: Install dependencies
         run: npm install
@@ -27,8 +27,8 @@ jobs:
       - name: Copy code to EC2 instance using SSH
         uses: appleboy/scp-action@master
         with:
-          source: "./"  # Copy the entire project directory
-          target: "/home/ubuntu/devops_project"  # Path to the main project folder on the EC2 instance
+          source: "./"  # Copy the entire directory
+          target: "/home/ubuntu/devops_project"  # Path to the project directory on the EC2 instance
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -67,8 +67,8 @@ jobs:
             # Remove the old image
             docker rmi node-docker-app || true
 
-            # Build the Docker image with the updated code
+            # Build the Docker image with the updated code locally
             docker build -t node-docker-app .
 
-            # Run the new container
+            # Run the new container with the latest image
             docker run -d -p 80:2000 --name node-docker-app node-docker-app
