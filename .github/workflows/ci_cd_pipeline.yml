@@ -37,16 +37,25 @@ jobs:
         run: echo "${{ secrets.SSH_PRIVATE_KEY }}"
 
 
-      - name: Deploy to EC2 and build Docker image
+      - name: Deploy to EC2 and update Docker container
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            # Navigate to the project directory
             cd /home/ubuntu/devops_project/node-docker-app
-            docker build -t node-docker-app .
+            
+            # Remove the old container if it exists
             docker stop node-docker-app || true
             docker rm node-docker-app || true
+            
+            # Remove the old image to ensure the new one is built
+            docker rmi node-docker-app || true
+            
+            # Build the Docker image with the updated code
+            docker build -t node-docker-app .
+            
+            # Run the new container with the latest image
             docker run -d -p 80:2000 --name node-docker-app node-docker-app
-
